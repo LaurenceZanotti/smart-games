@@ -8,7 +8,8 @@ Site de jogos eletrônicos para uma loja fictícia. Feito com Django, MySQL e Re
 2. Ativar ambiente virtual (Windows) `.\venv\Scripts\activate`
 3. Instalar dependências `pip install -r requirements.txt`
 4. Migrar banco de dados `python manage.py migrate`
-5. Criar arquivo `.env` e insira
+5. Carregar dados de teste iniciais `python manage.py loaddata dados_iniciais`
+6. Criar arquivo `.env` e insira
 
 ```
 DJANGO_SECRET_KEY="insirasuasecretkeyaqui-4629f2d1f561fe23c6062f522f5c37093c20eea0"
