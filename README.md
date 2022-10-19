@@ -4,6 +4,8 @@ Site de jogos eletrônicos para uma loja fictícia. Feito com Django, MySQL e Re
 
 ## Como rodar
 
+### Rodando a API
+
 1. Criar ambiente virtual `python -m venv venv`
 2. Ativar ambiente virtual (Windows) `.\venv\Scripts\activate`
 3. Instalar dependências `pip install -r requirements.txt`
@@ -19,10 +21,29 @@ DESCONTO50=desconto-smart-games-50-0b767dc57983564719fef11542173554
 DESCONTO70=desconto-smart-games-70-69dd604b962e9def4eee5e1b54d2fe50
 ```
 
-6. Rodar o server de teste `python manage.py runserver`
-7. Acessar `localhost:8000/admin` no seu navegador e entrar com usuário `admin` e senha `secret` (por favor mude o usuário e senha se rodar em produção)
+6. Rodar a api com `python manage.py runserver 0.0.0.0:8000`
+8. Acessar `localhost:8000/admin` no seu navegador e entrar com usuário `admin` e senha `secret` (por favor mude o usuário e senha se rodar em produção)
 
-Essa seção ainda será melhorada, e provavelmente terá como rodar o projeto inteiro com [Docker](https://www.docker.com/) (`docker-compose up`).
+Agora você pode ver o backend funcionando e manipular os dados pelo painel de administração
+
+### Rodando o Front-end
+
+1. Entre na pasta frontend pelo terminal `cd .\frontend\`
+2. Instale as dependências com `yarn`
+3. Rode o frontend com `yarn dev --host` (note os IPs que o terminal indicar)
+4. Acesse o app em `localhost:5173` no computador
+
+### Acessando no celular
+
+Para ver o app mobile (PWA), siga os passos a seguir:
+
+1. No seu celular, acesse o frontend pelo IP indicado no passo 3 acima (Ex: `http://ip.do.frontend:5173`)
+2. De preferência use Chrome, e nas opções, clique em "Adicionar à tela inicial"
+3. Clique em Adicionar
+4. Quando terminar de instalar, vá para a tela inicial do celular e procure o app SmartGames
+5. Clique no app SmartGames
+
+*OBS: Essa seção ainda será melhorada, e provavelmente terá como rodar o projeto inteiro com [Docker](https://www.docker.com/) (`docker-compose up`).*
 
 ## Entendendo o projeto
 
@@ -30,9 +51,11 @@ Essa seção tem uma breve explicação da estrutura de arquivos do projeto e se
 
 Ao se familiarizar com a estrutura de arquivos, note que 
 
-- Há um diretório `/smartgames` que define configurações do projeto, rotas, e aplicações WSGI ou ASGI para deploy.
+- O diretório `/smartgames` que define configurações do projeto, rotas, e aplicações WSGI ou ASGI para deploy.
 
-- Há um diretório `/api` que tem um aplicativo Django que serve rotas seguindo o padrão de *APIs RESTful* e interage com o banco de dados
+- O diretório `/api` que tem um aplicativo Django que serve rotas seguindo o padrão de *APIs RESTful* e interage com o banco de dados
+
+- O diretório `/frontend` tem um aplicativo React configurado para ser baixado como aplicativo para celular como um PWA
 
 Abaixo tem uma explicação mais detalhada de cada arquivo de cada diretório.
 
@@ -57,6 +80,12 @@ Esse diretório tem todos os pacotes Python que constituem o **app** `api` do pr
 `admin.py` tem classes que registram os modelos que serão manipulados pelos usuários administradores do site na rota `/admin`
 
 `/migrations` é um diretório que tem todas as migrações geradas pelo comando `makemigrations` (ou que raramente são criadas manualmente) e que são aplicadas a base de dados.
+
+### Diretório */frontend*
+
+Esse diretório tem um aplicativo React que roda com [Vite](https://vitejs.dev/), um conjunto de ferramentas para desenvolvimento frontend em diversos frameworks, como React, Vue, Svelte e etc.
+
+`/src` tem os componentes React onde `App.jsx` é o componente principal
 
 ### Arquivo *.env*
 
