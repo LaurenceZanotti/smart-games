@@ -3,6 +3,7 @@
 # As rotas estão no smartgames.urls e api.urls 
 
 # from django.shortcuts import render
+import os
 from django.forms import model_to_dict
 from django.http import JsonResponse
 from .models import Jogo, Compra
@@ -59,15 +60,75 @@ def api_jogo_comprar(request, id_jogo):
         try:
             # Tentar obter jogo
             jogo = Jogo.objects.get(id=id_jogo)
+            preco_descontado = None
+            
+            # Criar um registro de Compra
             compra = Compra.objects.create(jogo=jogo)
+
+            # Aplicar desconto se houver
+            if request.session.get("desconto"):
+                # Obter cupom e desconto
+                cupom = request.session['desconto']
+                desconto = float(f"0.{cupom[21:22]}")
+                # Calcular preço final
+                preco_descontado = jogo.preco - (jogo.preco * desconto)
+                # Retirar cupom de desconto do usuário após uso
+                request.session['desconto'] = None
+                # TODO: Adicionar desconto no registro de compras
+            
+
+            # Registrar Compra no banco de dados
             compra.save()
-            return JsonResponse({"msg": "Obrigado pela compra! Entraremos em contato com mais detalhes sobre a entrega."})
+
+            # Responder se compra ocorreu com ou sem desconto
+            if preco_descontado:
+                return JsonResponse({"msg": f"Você comprou {jogo.nome} por R$ {preco_descontado} usando cupom! Volte sempre!"})
+            else:
+                return JsonResponse({"msg": f"Você comprou {jogo.nome} por R$ {jogo.preco}! Volte sempre!"})
         except Jogo.DoesNotExist:
             # Se não existir, avisar que jogo não existe
             return JsonResponse({"msg": "Jogo não existe"}, status=404)
         except Exception as e:
+            # O ideal é trocar esse print por alguma função de biblioteca de
+            # logging para registrar o erro
             print(e)
-            return JsonResponse({"msg":"Algum erro aconteceu"}, status=500)
+            # Avisar que um erro inesperado aconteceu
+            return JsonResponse({"msg":"Ops! Algum erro inesperado aconteceu"}, status=500)
+    else:
+        # Retornar erro se método não for POST
+        return JsonResponse({"msg": "Método inválido"}, status=405)
+
+def api_desconto(request):
+    """
+    Valida desconto e guarda na sessão do usuário
+    """
+    descontos = [
+        os.environ.get("DESCONTO20"),
+        os.environ.get("DESCONTO50"),
+        os.environ.get("DESCONTO70"),
+    ]
+    
+    # Processar desconto
+    if request.method == "POST":
+        # Obter texto do QR Code
+        desconto = request.POST.get('desconto')
+
+        is_valido = False
+        desconto_aplicado = None
+        # Validar se código de desconto bate com códigos do servidor
+        if desconto in descontos:
+            is_valido = True
+            # Obter primeira parte do texto de desconto válido
+            desconto_aplicado = desconto
+
+        # Responder se cupom é válido ou não
+        if is_valido:
+            # Salvar desconto na sessão do usuário
+            request.session['desconto'] = desconto_aplicado
+            return JsonResponse({"msg": f"Desconto de {desconto_aplicado[21:23]}% aplicado!"})
+        else:
+            # Avisar que cupom não é válido
+            return JsonResponse({"msg": f"Seu cupom de desconto não é válido!"})
     else:
         # Retornar erro se método não for POST
         return JsonResponse({"msg": "Método inválido"}, status=405)
