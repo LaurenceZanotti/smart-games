@@ -9,15 +9,18 @@ Site de jogos eletrônicos para uma loja fictícia. Feito com Django, MySQL e Re
 3. Instalar dependências `pip install -r requirements.txt`
 4. Migrar banco de dados `python manage.py migrate`
 5. Carregar dados de teste iniciais `python manage.py loaddata dados_iniciais`
-6. Criar arquivo `.env` e insira
+6. Criar arquivo `.env` na pasta raiz do projeto e insira
 
 ```
 DJANGO_SECRET_KEY="insirasuasecretkeyaqui-4629f2d1f561fe23c6062f522f5c37093c20eea0"
 DEBUG=True
+DESCONTO20=desconto-smart-games-20-a2468cb34a5bf75d9861628d258d1f01
+DESCONTO50=desconto-smart-games-50-0b767dc57983564719fef11542173554
+DESCONTO70=desconto-smart-games-70-69dd604b962e9def4eee5e1b54d2fe50
 ```
 
 6. Rodar o server de teste `python manage.py runserver`
-7. Acessar `localhost:8000/api` ou `localhost:8000/admin` no seu navegador
+7. Acessar `localhost:8000/admin` no seu navegador e entrar com usuário `admin` e senha `secret` (por favor mude o usuário e senha se rodar em produção)
 
 Essa seção ainda será melhorada, e provavelmente terá como rodar o projeto inteiro com [Docker](https://www.docker.com/) (`docker-compose up`).
 
