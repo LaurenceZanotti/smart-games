@@ -23,7 +23,7 @@ class Jogo(models.Model):
     nome = models.CharField(max_length=128, default="")
     descricao = models.TextField(default="")
     imagem = models.CharField(max_length=500, default="")
-    preco = models.FloatField(default=0.0)
+    preco = models.FloatField(default=0.00)
     plataformas = models.CharField(max_length=128, default="")
     lojas = models.CharField(max_length=256, default="")
 
@@ -43,6 +43,8 @@ class Compra(models.Model):
         on_delete=models.SET_NULL, 
         null=True
     )
+    preco_final = models.FloatField(default=0.00)
+    desconto = models.CharField(max_length=60, default="")
     data_compra = models.DateTimeField(auto_now_add=True)
 
     # Métodos

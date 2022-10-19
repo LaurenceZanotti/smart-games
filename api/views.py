@@ -64,7 +64,7 @@ def api_jogo_comprar(request, id_jogo):
             
             # Criar um registro de Compra
             compra = Compra.objects.create(jogo=jogo)
-
+            compra.preco_final = jogo.preco
             # Aplicar desconto se houver
             if request.session.get("desconto"):
                 # Obter cupom e desconto
@@ -74,7 +74,10 @@ def api_jogo_comprar(request, id_jogo):
                 preco_descontado = jogo.preco - (jogo.preco * desconto)
                 # Retirar cupom de desconto do usuário após uso
                 request.session['desconto'] = None
-                # TODO: Adicionar desconto no registro de compras
+                # Adicionar desconto no registro de compras
+                compra.preco_final = preco_descontado
+                compra.desconto = cupom
+
             
 
             # Registrar Compra no banco de dados
