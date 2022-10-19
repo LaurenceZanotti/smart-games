@@ -6,4 +6,5 @@ urlpatterns = [
     path("", views.api_index, name="api_index"),
     path("jogos", views.api_jogos, name="api_jogos"),
     path("jogos/<int:id_jogo>", views.api_jogo, name="api_jogo"),
+    path("jogos/<int:id_jogo>/comprar", views.api_jogo_comprar, name="api_jogo_comprar"),
 ]
