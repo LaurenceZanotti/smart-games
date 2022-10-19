@@ -7,12 +7,12 @@ export default function App() {
 
   return (
     <>
-    <Navbar className="bg-slate-900 flex items-center" />
+    <Navbar className="bg-[#171a21] flex items-center" />
     <Header className="my-4" />
     <main className="min-h-screen" id="jogos">
       <ListaProdutos />
     </main>
-    <Footer className="bg-slate-900 flex justify-center items-center text-white min-h-[10em] text-sm" />
+    <Footer className="bg-[#171a21] flex justify-center items-center text-white min-h-[10em] text-sm" />
     </>
   )
 }
