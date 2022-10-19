@@ -17,7 +17,7 @@ DEBUG=True
 ```
 
 6. Rodar o server de teste `python manage.py runserver`
-7. Acessar `localhost:8000/api` ou `localhost:8000/admin` no seu navegador
+7. Acessar `localhost:8000/admin` no seu navegador e entrar com usuário `admin` e senha `secret` (por favor mude o usuário e senha se rodar em produção)
 
 Essa seção ainda será melhorada, e provavelmente terá como rodar o projeto inteiro com [Docker](https://www.docker.com/) (`docker-compose up`).
 
