@@ -16,7 +16,6 @@ export default function ListaProdutos() {
       .then(({jogos}) => setJogos(jogos))
   }, [])
   
-
   return (
     <div className="sm:mx-4" id="lista-produtos">
       {jogos.map(elemento => {
@@ -27,6 +26,7 @@ export default function ListaProdutos() {
         return (
           <Produto
             key={elemento.id} 
+            id={elemento.id}
             imagem={elemento.imagem}
             nome={elemento.nome}
             descricao={elemento.descricao}

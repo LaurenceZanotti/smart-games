@@ -57,6 +57,10 @@ def api_jogo_comprar(request, id_jogo):
     Registrar compra de jogo
     """
     if request.method == "POST":
+        # Apenas para que simule a demora e o frontend exiba status de carregando
+        import time
+        time.sleep(2)
+        # Processar compra
         try:
             # Tentar obter jogo
             jogo = Jogo.objects.get(id=id_jogo)
