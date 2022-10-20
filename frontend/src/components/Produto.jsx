@@ -17,15 +17,36 @@ export default function Produto(props) {
       <div className="m-4">
         <h2 className="font-bold text-xl">{props.nome}</h2>
         {/* Descrição desktop */}
-        <p className="text-justify hidden sm:block">{props.descricao}</p>
+        <p className={`text-justify hidden sm:block`}>{props.descricao.length > 180 && !expandido ? `${props.descricao.slice(0, 250)}...` : props.descricao}</p>
         {/* Descrição mobile */}
-        <p className="text-justify sm:hidden">{props.descricao.length > 42 ? `${props.descricao.slice(0, 182)}...` : props.descricao}</p>
+        <p className="text-justify sm:hidden">{props.descricao.length > 42 && !expandido ? `${props.descricao.slice(0, 182)}...` : props.descricao}</p>
         {/* Produto expandido */}
-        <div className={expandido ? `block` : `hidden`}>Expandido</div>
+        <div className={`my-2 ${expandido ? "block" : "hidden"}`} id="detalhes-container">
+          {/* Plataformas do jogo */}
+          <div className="my-2" id="plataformas-container">
+          {props.plataformas.map(plataforma => {
+            return (
+              <span className="plataforma border border-blue-500 text-blue-400 ml-0 mx-1 p-1 px-2 hover:bg-blue-400/10 rounded-sm">
+                {plataforma}
+              </span>                
+            )
+          })}
+          </div>
+          {/* Lojas que vendem o jogo */}
+          <div className="my-2" id="lojas-container">
+          {props.lojas.map(loja => {
+            return (
+              <span className="loja border border-green-400 text-green-300 ml-0 mx-1 p-1 px-2 hover:bg-green-400/10 rounded-sm cursor-pointer" title="Clique para ver no Google Maps">
+                {loja}
+              </span>                
+            )
+          })}
+          </div>
+        </div>
         {/* Preço e Ver detalhes */}
         <div className="bg-[#2c3946e6] flex items-center justify-between mt-2">
           <span className="font-extrabold mx-4">R$ {props.preco}</span>
-          <button onClick={handleBotaoExpandir} className="py-2 px-4 m-1 bg-gradient-to-r from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300 rounded-sm font-bold">Ver detalhes</button>
+          <button onClick={handleBotaoExpandir} className={`py-2 px-4 m-1 bg-gradient-to-r ${expandido ? "from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300" : "from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300"} rounded-sm font-bold`}>{expandido ? "Ver menos" : "Ver detalhes"}</button>
         </div>
       </div>
     </div>

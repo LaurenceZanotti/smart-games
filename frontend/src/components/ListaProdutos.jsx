@@ -20,6 +20,10 @@ export default function ListaProdutos() {
   return (
     <div className="sm:mx-4" id="lista-produtos">
       {jogos.map(elemento => {
+        // Transformar plataformas e lojas em uma lista/array
+        const lista_plataformas = elemento.plataformas.split("/")
+        const lista_lojas = elemento.lojas.split("/")
+        // Renderizar Produto e seus detalhes
         return (
           <Produto
             key={elemento.id} 
@@ -27,6 +31,8 @@ export default function ListaProdutos() {
             nome={elemento.nome}
             descricao={elemento.descricao}
             preco={elemento.preco}
+            plataformas={lista_plataformas}
+            lojas={lista_lojas}
           />
         )
       })}
