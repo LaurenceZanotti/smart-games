@@ -2,6 +2,8 @@
 
 Site de jogos eletrônicos para uma loja fictícia. Feito com Django, MySQL e React.
 
+As branches e pull requests foram preservadas para guardar o progresso de desenvolvimento de cada funcionalidade.
+
 ## Como rodar
 
 Resumindo, é necessário rodar a API e o Frontend separadamente, seguindo os passos abaixo. 
