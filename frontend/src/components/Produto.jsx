@@ -1,8 +1,9 @@
 // React
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 // Bibliotecas
 import { SpinnerGap, XCircle } from "phosphor-react"
+import { QrReader } from "react-qr-reader"
 
 export default function Produto(props) {
   /**
@@ -17,12 +18,11 @@ export default function Produto(props) {
     'componente': null,
     'is_aberto': false
   })
-
-  /**
-   * Funções de comportamento do Componente abaixo tem o padrão:
-   * 
-   * function handleNomeDaFuncao() {...}
-   */
+  const [desconto, setDesconto] = useState({
+    msg: "",
+    codigo: "", 
+    cameraAtivada: false,
+  })
 
   /**
    * Toggle expansão dos detalhes do produto
@@ -87,7 +87,7 @@ export default function Produto(props) {
       minWidth: "100%",
       minHeight: "250px",
     }
-    // Dicionário de lojas cacheadas
+    // Dicionário de lojas cacheadas acesso fácil
     const lojas_cache = {
       "Loja tambóre": (<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.7820582231443!2d-46.83653928441172!3d-23.50435828471121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf017b8c1a5da9%3A0x22a277028d33acc!2sShopping%20Tambor%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1666275500925!5m2!1spt-BR!2sbr" 
         style={css_mapa} 
@@ -123,6 +123,45 @@ export default function Produto(props) {
     // Alterar estado do mapa mapa para fechar
     setMapa({componente: null, is_aberto: false})
   }
+
+  useEffect(() => {
+    // Se não tiver código não fazer nada
+    if (!desconto.codigo) return
+    // console.log(desconto.codigo)
+
+    // Chamar API para obter desconto
+    fetch(
+      `http://${window.location.hostname}:8000/api/desconto`, 
+      {
+        method: "post",
+        body: JSON.stringify({desconto: desconto.codigo})
+      }
+    )
+      .then(res => res.json())
+      .then(data => {
+        // Atualizar estado do desconto para exibir mensagem
+        console.log(data)
+        setDesconto(prevState => {
+          return {
+            ...prevState,
+            msg: data.msg,
+            codigo: ""
+          }
+        })
+        // Retirar mensagem após 10 segundos
+        setTimeout(() => setDesconto(prevState => {
+            return {
+              ...prevState,
+              msg: "",
+              cameraAtivada: false
+            }
+          }),
+          10000
+        )
+      })
+      .catch(error => console.error(error))
+  }, [desconto.codigo])
+  
 
   return (
     // Container
@@ -190,10 +229,59 @@ export default function Produto(props) {
           </button>
           }
         </div>
+        {/* Leitor de QR Code Mobile */}
+        {(expandido && desconto.cameraAtivada) &&
+        <div className="block md:hidden text-center" id="mobile-qr-code">
+          {/* 
+          * Snippet do QrReader no README do projeto react-qr-reader:
+          * https://github.com/react-qr-reader/react-qr-reader#example-usage 
+          */}
+          
+          <span className="inline-block font-bold text-lg mt-6" id="qrcode-instructions">
+            {desconto.msg ? 
+            <SpinnerGap size={32} color="#fff" className="animate-spin" /> :
+            "Aproxime a câmera do QR Code" }
+          </span>
+          <QrReader 
+            onResult={(resultado, error) => {
+              if (!!resultado) {
+                // Salvar resultado no estado do componente
+                setDesconto(prevState => {
+                  return {...prevState, codigo: resultado?.text}
+                })
+              }
+              // if (!!error) console.info(error)
+            }}
+            constraints={{facingMode: 'environment'}}
+            style={{width: '100%'}}
+          />
+        </div>
+        }
         {/* Preço, Comprar e Ver detalhes */}
         <div className="bg-[#2c3946e6] flex items-center justify-between mt-4" id="acoes-container">
           <span className="font-extrabold mx-4">R$ {props.preco}</span>
-          <div>
+          <div id="botoes-container">
+            {/* Botão desconto */}
+            {expandido &&
+            <button 
+              onClick={() => setDesconto(prevState => {return {...prevState, cameraAtivada: !prevState.cameraAtivada}})}
+              className={
+                `
+                py-2 px-4 m-1 bg-gradient-to-r 
+                rounded-sm font-bold
+                from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300 
+                active:from-sky-500 active:to-sky-400 
+                `} 
+              disabled={compra.is_processando}
+              title="Use um QR Code de desconto com sua câmera!"
+            >
+              {
+                desconto.cameraAtivada ? 
+                "Fechar camera" : 
+                "Obter desconto"
+              }
+            </button>
+            }
             {/* Botão comprar */}
             {
             expandido &&
@@ -217,15 +305,15 @@ export default function Produto(props) {
               py-2 px-4 m-1 bg-gradient-to-r 
               rounded-sm font-bold 
               ${expandido ? 
-                "from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300" : 
-                "from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300"
+                "from-slate-500 to-slate-400 hover:from-slate-400 hover:to-slate-300" : 
+                "from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300"
               } 
             `}>
               {expandido ? "Ver menos" : "Ver detalhes"}
             </button>
           </div>
         </div>
-        {/* Container de mensagem (desaparece após 10 segundos) */}
+        {/* Container de mensagem da compra(desaparece após 10 segundos) */}
         <div className={`
           ${compra.msg ? "block" : "hidden"} 
           p-4 my-4 border rounded-md
@@ -235,12 +323,25 @@ export default function Produto(props) {
           `} 
           id="mensagem"
         >
-          {/* Mensagem de feedback */}
+          {/* Mensagem de feedback da compra*/}
           {
             compra.is_processando ? 
             <SpinnerGap size={32} color="#fff" className="animate-spin" /> : 
             compra.msg
           }
+        </div>
+        {/* Container de mensagem do desconto (desaparece após 10 segundos) */}
+        <div className={`
+          ${desconto.msg ? "block" : "hidden"} 
+          p-4 my-4 border rounded-md
+          border-blue-400
+          bg-blue-400/10
+          text-blue-400
+          `} 
+          id="mensagem"
+        >
+          {/* Mensagem de feedback da compra*/}
+          {desconto.msg}
         </div>
       </div>
     </div>

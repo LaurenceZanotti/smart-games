@@ -54,6 +54,8 @@ Para ver o app mobile (PWA), siga os passos a seguir:
 4. Quando terminar de instalar, vá para a tela inicial do celular e procure o app SmartGames
 5. Clique no app SmartGames
 
+OBS: Para ler o QR Code pelo celular, pode ser necessário ativar a flag `chrome://flags/#unsafely-treat-insecure-origin-as-secure` colocando IP do frontend. ([ver issue sobre isso](https://github.com/LaurenceZanotti/smart-games/issues/4))
+
 *OBS: Essa seção ainda será melhorada, e provavelmente terá como rodar o projeto inteiro com [Docker](https://www.docker.com/) (`docker-compose up`).*
 
 ## Entendendo o projeto

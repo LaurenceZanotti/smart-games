@@ -4,6 +4,7 @@
 
 # from django.shortcuts import render
 import os
+from json import loads
 from django.forms import model_to_dict
 from django.http import JsonResponse
 from .models import Jogo, Compra
@@ -118,7 +119,8 @@ def api_desconto(request):
     # Processar desconto
     if request.method == "POST":
         # Obter texto do QR Code
-        desconto = request.POST.get('desconto')
+        body = loads(request.body)
+        desconto = body.get("desconto")
 
         is_valido = False
         desconto_aplicado = None
