@@ -58,6 +58,44 @@ OBS: Para ler o QR Code pelo celular, pode ser necessário ativar a flag `chrome
 
 *OBS: Essa seção ainda será melhorada, e provavelmente terá como rodar o projeto inteiro com [Docker](https://www.docker.com/) (`docker-compose up`).*
 
+## Funcionalidades
+
+### API
+
+Após [rodar a API](#rodando-a-api):
+
+- É possível acessar `http:localhost:8000/admin` com usuário `admin` e senha `secret`
+- Painel de administração permite ver todos os jogos, compras e usuários (admins) do site
+
+Endpoints da API
+
+❌ significa não implementada ainda
+
+- GET `/jogo` ->  Lista de jogos completa
+- GET `/jogo/:id` -> Jogo único 
+- POST `/jogo` -> Criar objeto no servidor ❌
+- GET `/jogo/:id/new` -> Form para adicionar jogo ❌
+- GET `/jogo/:id/edit` -> Form para editar jogo ❌
+- PATCH `/jogo/:id/` -> Atualizar objeto no servidor ❌
+- DELETE `/jogo/:id` -> Deletar objeto no servidor ❌
+
+- POST `/jogo/:id/comprar` -> Criar registro em Compras
+- POST `/desconto` -> Recebe QR Code e retorna se é válido ou não, se for, salva na sessão do usuário e aplica para a próxima conta
+
+[Testes com Postman](https://www.postman.com/orbital-module-geoscientist-19490805/workspace/smartgamesapi)
+
+### Frontend
+
+Após [rodar o Frontend](#rodando-o-front-end):
+
+- É possível acessar `http://localhost:5173`
+- Os produtos serão listados
+- Escolha um e clique em `Ver detalhes`
+  - Você pode clicar no nome da loja para ver a localização no Google Mapas
+  - Comprar
+  - Clicar em Obter desconto no app mobile (PWA) abrirá uma câmera
+    - Aponte a câmera para um dos códigos QR na pasta raiz do projeto [qr-20.png](qr-20.png), [qr-50.png](qr-50.png), [qr-70.png](qr-70.png)
+
 ## Entendendo o projeto
 
 Movido para [`CONTRIBUTE.md`](CONTRIBUTE.md)
