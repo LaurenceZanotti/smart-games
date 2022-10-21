@@ -101,3 +101,69 @@ Após [rodar o Frontend](#rodando-o-front-end):
 Movido para [`CONTRIBUTE.md`](CONTRIBUTE.md)
 
 Se desejar entender o projeto com mais detalhes, veja o arquivo [CONTRIBUTE.md](CONTRIBUTE.md)
+
+## Referências e pesquisa
+
+Essa seção tem algumas referências usadas durante o planejamento do projeto para implementação
+
+### REST
+
+https://www.learnhowtoprogram.com/c-and-net/basic-web-applications/introduction-to-restful-routing
+
+### Maps
+
+**Mapa incorporado manualmente**
+
+https://support.google.com/maps/answer/144361?hl=en&co=GENIE.Platform%3DDesktop#:~:text=Embed%20a%20map%20or%20directions&text=the%20embedded%20map.-,Open%20Google%20Maps.,you'd%20like%20to%20embed.&text=Click%20Share%20or%20embed%20map,Click%20Embed%20map.
+
+OBS: É necessário fazer com todas as lojas manualmente
+
+**Redirect com coordenadas**
+
+https://stackoverflow.com/questions/7994052/redirect-users-to-location-on-google-map-with-coordinates
+
+`https://www.google.com/maps?q=x,y`
+`https://www.google.com/maps?q=shopping+tambore`
+
+Talvez converter string para formato que resulte em apenas 1 resultado
+
+**Bibliotecas**
+
+https://blog.bitsrc.io/top-5-map-libraries-for-react-in-2021-20a37ff5234
+
+- React Leaflet / Leaflet
+- Mapbox (precisa de API key)
+
+**Google Mapas é requisito. Então outros mapas que não usam Google Maps estão descartados**
+
+**Busca de coordenadas por string (Geocoding)**
+
+https://gis.stackexchange.com/questions/21890/does-leaflet-js-api-provide-a-geocoding-service
+https://wiki.openstreetmap.org/wiki/Nominatim
+
+### QR Code
+
+Biblioteca React: [react-qr-reader](https://www.npmjs.com/package/react-qr-reader) 
+QR Code desconto gerador: 
+
+- QR Code gerado em: https://br.qr-code-generator.com/
+- Site do hash: https://www.md5hashgenerator.com/
+- Hash da string MD5: `047739d00bf17cd2f863ecaa7cc57c9a`
+- Hash da string puro: `desconto-smart-games`
+- String: `desconto-smart-games-047739d00bf17cd2f863ecaa7cc57c9a`
+- Arquivo base: `qr-desconto.png`
+
+Pseudo código (Python)
+
+    if qr_code == "desconto-smart-games-047739d00bf17cd2f863ecaa7cc57c9a":
+        # Aplicar desconto
+    else:
+        # Avisar que QR code é invalido
+
+### Design
+
+Baseado na em uma plataforma conhecida
+
+https://store.steampowered.com/wishlist
+
+Talvez criar um GIF ou usar um vídeo como background no header
